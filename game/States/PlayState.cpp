@@ -4,6 +4,7 @@
 #include "MenuState.hpp"   // Necesario para crear el estado de menú
 #include <SDL2/SDL_ttf.h>
 #include <stdexcept>
+#include "ResultState.hpp"
 
 // Constructor
 PlayState::PlayState(StateManager& manager) 
@@ -46,6 +47,7 @@ void PlayState::render(Window& window) {
     // Renderizar instrucciones
     const std::string instruction1 = "Presiona P para pausar";
     const std::string instruction2 = "Presiona F para volver al menu";
+    const std::string instruction3 = "Presiona T para ir END";
     
     textX = (screenWidth - textRender.getTextWidth(instruction1)) / 2;
     textY += 70;
@@ -54,6 +56,8 @@ void PlayState::render(Window& window) {
     textX = (screenWidth - textRender.getTextWidth(instruction2)) / 2;
     textY += 40;
     textRender.render(window.getRenderer(), instruction2, textX, textY, color);
+
+    textRender.render(window.getRenderer(), instruction3, 20, 20, color);
     
     window.present();
 }
@@ -70,6 +74,12 @@ void PlayState::handleEvents(EventHandler& eventHandler) {
     if (eventHandler.isKeyPressed(SDL_SCANCODE_F)) {
         stateManager.submitRequest(StateRequest{
             RequestChangeState{std::make_unique<MenuState>(stateManager)}  // Constructor correcto
+        });
+    }
+
+    if (eventHandler.isKeyPressed(SDL_SCANCODE_T)) {
+        stateManager.submitRequest(StateRequest{
+            RequestChangeState{std::make_unique<ResultState>(stateManager)}  // Constructor correcto
         });
     }
 }

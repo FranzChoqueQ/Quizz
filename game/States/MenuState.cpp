@@ -1,4 +1,5 @@
 #include "MenuState.hpp"
+#include "SelectQState.hpp"
 #include "PlayState.hpp"
 #include "StateManager.hpp"
 #include "PauseState.hpp"  // Necesario para crear el estado de pausa
@@ -41,7 +42,7 @@ void MenuState::handleEvents(EventHandler& eventHandler) {
 
     if (eventHandler.isKeyPressed(SDL_SCANCODE_K)) {
         stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager)
+            std::make_unique<SelectQState>(stateManager)
         });
     }
 }

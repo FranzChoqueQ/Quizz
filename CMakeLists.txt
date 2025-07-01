@@ -44,8 +44,10 @@ set(SOURCE_FILES
     engine/core/Window.cpp
     engine/graphics/TextRenderer.cpp
     game/States/MenuState.cpp
+    game/States/SelectQState.cpp
     game/States/PlayState.cpp
     game/States/PauseState.cpp
+    game/States/ResultState.cpp
     game/States/StateManager.cpp
     game/States/StateRequest.cpp
     game/MainGame.cpp

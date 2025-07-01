@@ -1,8 +1,19 @@
 #pragma once
 
-class SelectQState{
+#include "GameState.hpp"
+#include "StateManager.hpp"
+#include "PlayState.hpp"
+
+class SelectQState : public GameState{
 public:
-    SelectQState();
+    SelectQState(StateManager& manager);
+    void enter() override;
+    void exit() override;
+    void update(float deltaTime) override;
+    void render(Window& window) override;
+    void handleEvents(EventHandler& eventHandler) override;
+
+    StateManager& stateManager;
 private:
 
 };
