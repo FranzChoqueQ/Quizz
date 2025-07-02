@@ -21,6 +21,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}  # Raíz del proyecto (para includes relativos desde src/)
     ${CMAKE_SOURCE_DIR}/engine/core
     ${CMAKE_SOURCE_DIR}/engine/graphics
+    ${CMAKE_SOURCE_DIR}/engine/graphics/shapes
     ${CMAKE_SOURCE_DIR}/game/States
     ${CMAKE_SOURCE_DIR}/game
 )
@@ -43,6 +44,8 @@ set(SOURCE_FILES
     engine/core/EventHandler.cpp
     engine/core/Window.cpp
     engine/graphics/TextRenderer.cpp
+    engine/graphics/shapes/Rectangle.cpp
+    engine/graphics/shapes/BotonRectangular.cpp
     game/States/MenuState.cpp
     game/States/SelectQState.cpp
     game/States/PlayState.cpp

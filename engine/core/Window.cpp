@@ -30,7 +30,7 @@ Window::~Window(){
 }
 
 void Window::clear(){
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Color negro
+    SDL_SetRenderDrawColor(renderer, 0, 255, 248, 255); // Color negro
     SDL_RenderClear(renderer);
 }
 

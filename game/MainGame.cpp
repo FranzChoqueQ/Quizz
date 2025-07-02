@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 MainGame::MainGame() 
-    : Game("Mi Primer Juego SDL2", 800, 600){
+    : Game("Quizz SDL2", 1000, 700){
     }
 
 void MainGame::initialize() {

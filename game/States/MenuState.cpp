@@ -6,12 +6,26 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdexcept>
 //#include "PlayState.hpp"
+#include <iostream>
 
-MenuState::MenuState(StateManager& manager) : stateManager(manager) {}
+MenuState::MenuState(StateManager& manager) : stateManager(manager) {
+    SDL_Color colorNormal = {0, 12, 102, 255};
+    SDL_Color colorHover = {30, 64, 255, 255};
+
+    botonInicio = std::make_unique<BotonRectangular>(
+        300, 300, 400, 100, 
+        colorNormal, colorHover
+    );
+
+    botonSalir = std::make_unique<BotonRectangular>(
+        300, 500, 400, 100, 
+        colorNormal, colorHover
+    );    
+}
 
 void MenuState::enter() {
     // Inicialización específica del menú
-    if (!textRender.loadFont("assets/fonts/arial.ttf", 36)) {
+    if (!textRender.loadFont("assets/fonts/times.ttf", 90)) {
         throw std::runtime_error("No se pudo cargar la fuente en PlayState");
     }
 }
@@ -26,13 +40,44 @@ void MenuState::update(float deltaTime) {
 
 void MenuState::render(Window& window) {
     window.clear();
-    //textRender.loadFont("assets/fonts/arial.ttf", 36);
-    // Renderizar texto "Aquí es el menú"
-    const std::string menuText = "Presiona K para iniciar";
-    SDL_Color white = {255, 100, 255, 255};
-    //int textX = (screenWidth - textRenderer.getTextWidth(menuText)) / 2;
-    //int textY = (screenHeight / 2) - 50;
-    textRender.render(window.getRenderer(), menuText, 100, 280, white);
+
+    textRender.setFontSize(90);
+
+    botonInicio->render(window.getRenderer());
+    botonSalir->render(window.getRenderer());
+
+    // Texto Inciar Escalado para las dimensiones del Boton Iniciar
+    const std::string inicioText = "INICIAR";
+    SDL_Color blanco = {255, 255, 255, 255};
+    SDL_Rect buttInicioDimensiones = botonInicio->getRect();
+
+    int textInicioX = buttInicioDimensiones.x + ((buttInicioDimensiones.w - textRender.getTextWidth(inicioText)) / 2);
+    int textInicioY = buttInicioDimensiones.y + ((buttInicioDimensiones.h - textRender.getTextHeight(inicioText)) / 2);
+
+    textRender.render(window.getRenderer(), inicioText, textInicioX, textInicioY, blanco);
+
+    // Texto Salir Escalado para las dimensiones del Boton Iniciar
+    const std::string salirText = "SALIR";
+    SDL_Rect buttSalirDimensiones = botonSalir->getRect();
+
+    int textSalirX = buttSalirDimensiones.x + ((buttSalirDimensiones.w - textRender.getTextWidth(salirText)) / 2);
+    int textSalirY = buttSalirDimensiones.y + ((buttSalirDimensiones.h - textRender.getTextHeight(salirText)) / 2);
+
+    textRender.render(window.getRenderer(), salirText, textSalirX, textSalirY, blanco);
+
+    // Titulo
+    const std::string textTitle = "QUIZZ";
+    SDL_Color blue = {0, 51, 102, 255};
+    textRender.render(window.getRenderer(), textTitle, 350, 100, blue);
+
+    // Mensaje de inicio
+    textRender.setFontSize(30);
+    const std::string menuText = "Press K Iniciar";
+    SDL_Color black = {0, 0, 0, 255};
+    textRender.render(window.getRenderer(), menuText, 100, 650, black);
+
+    const std::string mensajeSalir = "ESC para Salir";
+    textRender.render(window.getRenderer(), mensajeSalir, 750, 650, black);
     
     window.present();
 }
@@ -40,9 +85,16 @@ void MenuState::render(Window& window) {
 void MenuState::handleEvents(EventHandler& eventHandler) {
     eventHandler.pollEvents();
 
-    if (eventHandler.isKeyPressed(SDL_SCANCODE_K)) {
+    botonInicio->handleEvents(eventHandler);
+    botonSalir->handleEvents(eventHandler);
+
+    if (botonInicio->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_K)) {
         stateManager.submitRequest(RequestChangeState{
             std::make_unique<SelectQState>(stateManager)
         });
+    }
+
+    if (botonSalir->isClicked(eventHandler)){
+        eventHandler.salir();
     }
 }

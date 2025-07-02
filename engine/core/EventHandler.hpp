@@ -20,6 +20,7 @@ public:
     bool isMouseButtonPressed(Uint8 button) const;
     bool isMouseButtonReleased(Uint8 button) const;
     void getMousePosition(int& x, int& y) const;
+    void salir();
     
     // Eventos de ventana
     bool quitRequested() const;

@@ -76,3 +76,7 @@ void EventHandler::updatePreviousStates() {
     std::copy(currentKeyStates, currentKeyStates + numKeys, previousKeyStates);
     previousMouseState = currentMouseState;
 }
+
+void EventHandler::salir(){
+    quit = true;
+}
