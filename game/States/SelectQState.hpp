@@ -15,5 +15,6 @@ public:
 
     StateManager& stateManager;
 private:
-
+    std::unique_ptr<BotonRectangular> botonQ1;
+    std::unique_ptr<BotonRectangular> botonQ2;
 };

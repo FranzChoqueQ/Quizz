@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.hpp"
+#include "BotonRectangular.hpp"
 
 class StateManager;
 
@@ -16,4 +17,8 @@ public:
 private:
     StateManager& stateManager;
     // ... otros miembros ...
+    std::unique_ptr<BotonRectangular> botonRespuesta1;
+    std::unique_ptr<BotonRectangular> botonRespuesta2;
+    std::unique_ptr<BotonRectangular> botonRespuesta3;
+    std::unique_ptr<BotonRectangular> botonRespuesta4;
 };

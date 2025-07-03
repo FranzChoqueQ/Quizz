@@ -3,7 +3,18 @@
 #include <stdexcept>
 
 SelectQState::SelectQState(StateManager& manager): stateManager(manager){
+    SDL_Color colorNormal = {0, 12, 102, 255};
+    SDL_Color colorHover = {30, 64, 255, 255};
 
+    botonQ1 = std::make_unique<BotonRectangular>(
+        50, 100, 250, 80, 
+        colorNormal, colorHover
+    );
+
+    botonQ2 = std::make_unique<BotonRectangular>(
+        50, 200, 250, 80, 
+        colorNormal, colorHover
+    );
 }
 void SelectQState::enter(){
     if (!textRender.loadFont("assets/fonts/arial.ttf", 36)) {
@@ -21,12 +32,12 @@ void SelectQState::update(float deltaTime) {
 
 void SelectQState::render(Window& window) {
     window.clear();
-    //textRender.loadFont("assets/fonts/arial.ttf", 36);
-    // Renderizar texto "Aquí es el menú"
+
+    botonQ1->render(window.getRenderer());
+    botonQ2->render(window.getRenderer());
+
     const std::string menuText = "Presiona S para Play";
     SDL_Color white = {255, 100, 0, 255};
-    //int textX = (screenWidth - textRenderer.getTextWidth(menuText)) / 2;
-    //int textY = (screenHeight / 2) - 50;
     textRender.render(window.getRenderer(), menuText, 100, 280, white);
     
     window.present();
@@ -35,18 +46,12 @@ void SelectQState::render(Window& window) {
 void SelectQState::handleEvents(EventHandler& eventHandler) {
     eventHandler.pollEvents();
 
-    if (eventHandler.isKeyPressed(SDL_SCANCODE_S)) {
+    botonQ1->handleEvents(eventHandler);
+    botonQ2->handleEvents(eventHandler);
+
+    if (botonQ1->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_S)) {
         stateManager.submitRequest(RequestChangeState{
             std::make_unique<PlayState>(stateManager)
         });
     }
 }
-
-/*
-SelectQState(StateManager& manager);
-    void enter() override;
-    void exit() override;
-    void update(float deltaTime) override;
-    void render(Window& window) override;
-    void handleEvents(EventHandler& eventHandler) override;
-*/
