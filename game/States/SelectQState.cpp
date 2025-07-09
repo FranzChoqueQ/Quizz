@@ -16,6 +16,7 @@ SelectQState::SelectQState(StateManager& manager): stateManager(manager){
         colorNormal, colorHover
     );
 }
+
 void SelectQState::enter(){
     if (!textRender.loadFont("assets/fonts/arial.ttf", 36)) {
         throw std::runtime_error("No se pudo cargar la fuente en PlayState");

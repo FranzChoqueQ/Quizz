@@ -1,6 +1,11 @@
 #pragma once
+
+#include <vector>
+
 #include "GameState.hpp"
-#include "BotonRectangular.hpp"
+#include "engine/graphics/shapes/BotonRectangular.hpp"
+#include "game/Database/QuestionBank.hpp"
+#include "BotonRespuesta.hpp"
 
 class StateManager;
 
@@ -17,8 +22,25 @@ public:
 private:
     StateManager& stateManager;
     // ... otros miembros ...
-    std::unique_ptr<BotonRectangular> botonRespuesta1;
-    std::unique_ptr<BotonRectangular> botonRespuesta2;
+    std::unique_ptr<BotonRectangular> botonSiguientePregunta;
+    std::unique_ptr<BotonRectangular> botonAnteriorPregunta;
+    /*std::unique_ptr<BotonRectangular> botonRespuesta2;
     std::unique_ptr<BotonRectangular> botonRespuesta3;
-    std::unique_ptr<BotonRectangular> botonRespuesta4;
+    std::unique_ptr<BotonRectangular> botonRespuesta4;*/
+
+    int punteroPreguntas;
+    int preguntaActual;
+    int respCorrectas;
+    int respIncorrectas;
+    bool first; // control para primera respuesta
+
+    std::vector<int> historialResp;
+    
+    QuestionBank preguntas;
+    std::vector<BotonRespuesta> opciones;
+
+    SDL_Color colorCorrecto;
+
+    bool siguientePregunta;
+    bool anteriorPregunta;
 };

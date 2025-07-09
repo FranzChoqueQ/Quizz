@@ -23,6 +23,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/engine/graphics
     ${CMAKE_SOURCE_DIR}/engine/graphics/shapes
     ${CMAKE_SOURCE_DIR}/game/States
+    ${CMAKE_SOURCE_DIR}/game/Database
     ${CMAKE_SOURCE_DIR}/game
 )
 
@@ -46,6 +47,7 @@ set(SOURCE_FILES
     engine/graphics/TextRenderer.cpp
     engine/graphics/shapes/Rectangle.cpp
     engine/graphics/shapes/BotonRectangular.cpp
+    engine/graphics/shapes/BotonRespuesta.cpp
     game/States/MenuState.cpp
     game/States/SelectQState.cpp
     game/States/PlayState.cpp
@@ -53,6 +55,7 @@ set(SOURCE_FILES
     game/States/ResultState.cpp
     game/States/StateManager.cpp
     game/States/StateRequest.cpp
+    game/Database/QuestionBank.cpp
     game/MainGame.cpp
 )
 

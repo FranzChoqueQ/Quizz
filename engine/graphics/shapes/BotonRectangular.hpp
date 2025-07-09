@@ -11,10 +11,11 @@ public:
                     SDL_Color colorHover);
     
     void render(SDL_Renderer* renderer) const override;
-    void handleEvents(const EventHandler& eventHandler);
+    virtual void handleEvents(const EventHandler& eventHandler);
 
-private:
     SDL_Color colorNormal;
     SDL_Color colorHover;
+private:
+    
     //std::function<void()> onClick;
 };

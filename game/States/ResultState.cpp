@@ -2,7 +2,9 @@
 
 #include "MenuState.hpp"
 
-ResultState::ResultState(StateManager& manager) : stateManager(manager) {}
+//#include "iostream"
+
+ResultState::ResultState(StateManager& manager, int acertadas, int fallas) : stateManager(manager), numAciertos(acertadas), numFallas(fallas)  {}
 
 void ResultState::enter() {
     // Inicialización específica del menú
@@ -21,13 +23,16 @@ void ResultState::update(float deltaTime) {
 
 void ResultState::render(Window& window) {
     window.clear();
-    //textRender.loadFont("assets/fonts/arial.ttf", 36);
-    // Renderizar texto "Aquí es el menú"
+
     const std::string menuText = "Presiona M para volver al menu";
-    SDL_Color white = {255, 100, 255, 255};
-    //int textX = (screenWidth - textRenderer.getTextWidth(menuText)) / 2;
-    //int textY = (screenHeight / 2) - 50;
-    textRender.render(window.getRenderer(), menuText, 100, 280, white);
+    SDL_Color white = {50, 0, 0, 255};
+    textRender.render(window.getRenderer(), menuText, 100, 100, white);
+
+    const std::string textoAciertos = "Respuestas Acertadas: " + std::to_string(numAciertos);
+    textRender.render(window.getRenderer(), textoAciertos, 100, 200, white);
+
+    const std::string textoFallos = "Respuestas Erradas: " + std::to_string(numFallas);
+    textRender.render(window.getRenderer(), textoFallos, 100, 300, white);
     
     window.present();
 }

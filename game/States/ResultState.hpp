@@ -7,7 +7,7 @@
 
 class ResultState : public GameState{
 public:
-    ResultState(StateManager& manager);
+    ResultState(StateManager& manager, int acertadas, int fallas);
     void enter() override;
     void exit() override;
     void update(float deltaTime) override;
@@ -15,6 +15,8 @@ public:
     void handleEvents(EventHandler& eventHandler) override;
 
     StateManager& stateManager;
+    int numAciertos;
+    int numFallas;
 private:
 
 };
