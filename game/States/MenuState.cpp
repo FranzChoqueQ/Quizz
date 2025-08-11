@@ -2,10 +2,9 @@
 #include "SelectQState.hpp"
 #include "PlayState.hpp"
 #include "StateManager.hpp"
-#include "PauseState.hpp"  // Necesario para crear el estado de pausa
+#include "PauseState.hpp" 
 #include <SDL2/SDL_ttf.h>
 #include <stdexcept>
-//#include "PlayState.hpp"
 #include <iostream>
 
 MenuState::MenuState(StateManager& manager) : stateManager(manager) {
@@ -24,7 +23,6 @@ MenuState::MenuState(StateManager& manager) : stateManager(manager) {
 }
 
 void MenuState::enter() {
-    // Inicialización específica del menú
     if (!textRender.loadFont("assets/fonts/times.ttf", 90)) {
         throw std::runtime_error("No se pudo cargar la fuente en PlayState");
     }
@@ -83,8 +81,6 @@ void MenuState::render(Window& window) {
 }
 
 void MenuState::handleEvents(EventHandler& eventHandler) {
-    eventHandler.pollEvents();
-
     botonInicio->handleEvents(eventHandler);
     botonSalir->handleEvents(eventHandler);
 

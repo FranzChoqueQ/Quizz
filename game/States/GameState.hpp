@@ -1,13 +1,9 @@
 #pragma once
 
-//#include "StateManager.hpp"
 #include "engine/core/EventHandler.hpp"
 #include "engine/core/Window.hpp"
 #include "engine/graphics/TextRenderer.hpp"
 
-// Declaraciones adelantadas
-class EventHandler;
-class Window;
 class StateManager;
 
 class GameState {
@@ -24,5 +20,4 @@ public:
     bool isTranscendent() const { return false; } // Para updates múltiples
 
     TextRenderer textRender;
-    //StateManager stateManager;
 };

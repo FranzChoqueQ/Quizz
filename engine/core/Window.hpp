@@ -15,9 +15,6 @@ public:
     
     int getWidth() const { return width; }
     int getHeight() const { return height; }
-    
-    //TextRenderer textRender;
-    //TextRenderer& getTextRenderer();
 
 private:
     SDL_Window* window;

@@ -26,7 +26,7 @@ void MainGame::render() {
 }
 
 void MainGame::handleEvents() {
-    //eventHandler.pollEvents();
+    eventHandler.pollEvents();
     stateManager.handleEvents(eventHandler);
     
     if (eventHandler.isKeyDown(SDL_SCANCODE_ESCAPE)) {

@@ -48,7 +48,6 @@ void StateManager::handleEvents(EventHandler& eventHandler) {
     }
 }
 
-// ¿Esta vacio?
 bool StateManager::isEmpty() const {
     return states.empty();
 }
@@ -62,7 +61,7 @@ void StateManager::submitRequest(StateRequest request) {
 void StateManager::processRequests() {
     requestHandler.applyRequests(*this);
     
-    // Opcional: limpieza de estados muertos
+    // limpieza de estados muertos
     while (!states.empty() && states.top() == nullptr) {
         states.pop();
     }

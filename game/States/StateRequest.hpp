@@ -2,12 +2,7 @@
 #include <memory>
 #include <vector>
 #include <variant>
-//#include "GameState.hpp"
-//#include "StateManager.hpp"
-
-// Declaración adelantada para romper dependencia circular
-class GameState;
-class StateManager;
+#include "GameState.hpp"
 
 // Tipos de solicitudes
 struct RequestPushState {

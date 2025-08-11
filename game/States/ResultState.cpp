@@ -2,12 +2,9 @@
 
 #include "MenuState.hpp"
 
-//#include "iostream"
-
 ResultState::ResultState(StateManager& manager, int acertadas, int fallas) : stateManager(manager), numAciertos(acertadas), numFallas(fallas)  {}
 
 void ResultState::enter() {
-    // Inicialización específica del menú
     if (!textRender.loadFont("assets/fonts/arial.ttf", 36)) {
         throw std::runtime_error("No se pudo cargar la fuente en PlayState");
     }
@@ -38,8 +35,6 @@ void ResultState::render(Window& window) {
 }
 
 void ResultState::handleEvents(EventHandler& eventHandler) {
-    eventHandler.pollEvents();
-
     if (eventHandler.isKeyPressed(SDL_SCANCODE_M)) {
         stateManager.submitRequest(RequestChangeState{
             std::make_unique<MenuState>(stateManager)

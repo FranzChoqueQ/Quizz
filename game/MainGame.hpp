@@ -19,5 +19,4 @@ private:
     TextRenderer textRender;
     //MenuState menuEstado;
     StateManager stateManager;
-
 };

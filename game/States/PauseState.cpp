@@ -7,10 +7,9 @@
 #include <stdexcept>
 
 PauseState::PauseState(StateManager& manager) 
-    : stateManager(manager) {}  // Inicialización correcta
+    : stateManager(manager) {} 
 
 void PauseState::enter() {
-    // Inicialización del estado de pausa
     if (!textRender.loadFont("assets/fonts/arial.ttf", 36)) {
         throw std::runtime_error("No se pudo cargar la fuente en PlayState");
     }
@@ -36,8 +35,6 @@ void PauseState::render(Window& window) {
 }
 
 void PauseState::handleEvents(EventHandler& eventHandler) {
-    eventHandler.pollEvents();
-
     if (eventHandler.isKeyPressed(SDL_SCANCODE_P)) {
         stateManager.popState();  // Quitar el estado de pausa
     }

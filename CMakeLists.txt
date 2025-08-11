@@ -23,6 +23,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/engine/graphics
     ${CMAKE_SOURCE_DIR}/engine/graphics/shapes
     ${CMAKE_SOURCE_DIR}/game/States
+    ${CMAKE_SOURCE_DIR}/game/Database/SQLiteCpp
     ${CMAKE_SOURCE_DIR}/game/Database
     ${CMAKE_SOURCE_DIR}/game
 )
@@ -30,10 +31,12 @@ include_directories(
 # Rutas manuales para MSYS2 (UCRT64)
 include_directories(
     C:/msys64/ucrt64/include/SDL2
+    C:/SQLITE/SQLiteCpp/include
 )
 
 link_directories(
     C:/msys64/ucrt64/lib
+    C:/SQLITE/SQLiteCpp/build
 )
 
 # --------------------------------------------------
@@ -56,6 +59,7 @@ set(SOURCE_FILES
     game/States/StateManager.cpp
     game/States/StateRequest.cpp
     game/Database/QuestionBank.cpp
+    game/Database/ExtraerDB.cpp
     game/MainGame.cpp
 )
 
@@ -68,6 +72,8 @@ target_link_libraries(${PROJECT_NAME}
     SDL2main
     SDL2
     SDL2_ttf
+    SQLiteCpp
+    sqlite3
 )
 
 # --------------------------------------------------

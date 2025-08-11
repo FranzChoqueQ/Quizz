@@ -4,9 +4,8 @@
 #include "GameState.hpp"
 #include "StateRequest.hpp"
 
-// Declaración adelantada
-class Window;
-class EventHandler;
+#include "engine/core/Window.hpp"
+#include "engine/core/EventHandler.hpp"
 
 class StateManager {
 public:

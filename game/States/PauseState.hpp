@@ -11,5 +11,5 @@ public:
     void render(Window& window) override;
     void handleEvents(EventHandler& eventHandler) override;
 
-    StateManager& stateManager;  // Referencia al StateManager
+    StateManager& stateManager; 
 };

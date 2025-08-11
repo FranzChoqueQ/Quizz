@@ -1,7 +1,6 @@
 #include "PlayState.hpp"
 #include "StateManager.hpp"
-#include "PauseState.hpp"  // Necesario para crear el estado de pausa
-//#include "MenuState.hpp"   // Necesario para crear el estado de menú
+#include "PauseState.hpp" 
 #include "SelectQState.hpp"
 #include <SDL2/SDL_ttf.h>
 #include <stdexcept>
@@ -10,8 +9,8 @@
 #include "iostream"
 
 // Constructor
-PlayState::PlayState(StateManager& manager) 
-    : stateManager(manager) {
+PlayState::PlayState(StateManager& manager, int idTema) 
+    : stateManager(manager), idTema(idTema) {
     // Inicialización de recursos específicos del estado
     SDL_Color colorNormal = {0, 12, 102, 255};
     SDL_Color colorHover = {30, 64, 255, 255};
@@ -42,7 +41,7 @@ PlayState::PlayState(StateManager& manager)
     respIncorrectas = 0;
 
     historialResp = {};
-    first = true;
+    firstResp = true;
 }
 
 void PlayState::enter() {
@@ -59,17 +58,17 @@ void PlayState::exit() {
 void PlayState::update(float deltaTime) {
     // Lógica de actualización del juego
     if (siguientePregunta){
-        punteroPreguntas += 6;
+        punteroPreguntas += 1;
         siguientePregunta = false;
         preguntaActual += 1;
-        first = true;
+        firstResp = true;
     }
 
     if (anteriorPregunta){
-        punteroPreguntas -= 6;
+        punteroPreguntas -= 1;
         anteriorPregunta = false;
         preguntaActual -= 1;
-        first = true;
+        firstResp = true;
     }
 }
 
@@ -90,7 +89,9 @@ void PlayState::render(Window& window) {
     const std::string instruction1 = "Presiona P para pausar";
     const std::string instruction2 = "Presiona F para Return";
     const std::string instruction3 = "Presiona T para ir END";
-    const std::string totalPreguntas = std::to_string(preguntas.getTotalPreguntas()/6);
+    //const std::string totalPreguntas = std::to_string(preguntas.getTotalPreguntas()/6);
+    //const std::string currentCuestion = std::to_string(preguntaActual);
+    const std::string totalPreguntas = std::to_string(database.totalPreguntas(idTema));
     const std::string currentCuestion = std::to_string(preguntaActual);
 
     textRender.render(window.getRenderer(), instruction1, 80, 20, black);
@@ -101,8 +102,8 @@ void PlayState::render(Window& window) {
     
     textRender.setFontSize(25);
     // Pregunta
-    const std::string mensajePregunta = preguntas.obtenerElemento(punteroPreguntas);
-    textRender.render(window.getRenderer(), mensajePregunta, 100, 100, black);
+    const std::string mensajePregunta = database.obtenerPregunta(idTema, punteroPreguntas);
+    textRender.render(window.getRenderer(), mensajePregunta, 40, 100, black);
 
     // Botones respuestas
     for(auto& boton : opciones){
@@ -112,17 +113,21 @@ void PlayState::render(Window& window) {
     botonSiguientePregunta->render(window.getRenderer());
     botonAnteriorPregunta->render(window.getRenderer());
 
+    idPregunta = database.obteneridPregunta(idTema, punteroPreguntas);
+
+    respuestas = database.obtenerRespuestas(idPregunta);
+
     // Respuestas
-    const std::string mensajeRespuesta1 = preguntas.obtenerElemento(punteroPreguntas + 1);
+    const std::string mensajeRespuesta1 = respuestas[0].first;
     textRender.render(window.getRenderer(), mensajeRespuesta1, 80, 210, white);
     
-    const std::string mensajeRespuesta2 = preguntas.obtenerElemento(punteroPreguntas + 2);
+    const std::string mensajeRespuesta2 = respuestas[1].first;
     textRender.render(window.getRenderer(), mensajeRespuesta2, 80, 320, white);
 
-    const std::string mensajeRespuesta3 = preguntas.obtenerElemento(punteroPreguntas + 3);
+    const std::string mensajeRespuesta3 = respuestas[2].first;
     textRender.render(window.getRenderer(), mensajeRespuesta3, 80, 430, white);
 
-    const std::string mensajeRespuesta4 = preguntas.obtenerElemento(punteroPreguntas + 4);
+    const std::string mensajeRespuesta4 = respuestas[3].first;
     textRender.render(window.getRenderer(), mensajeRespuesta4, 80, 540, white);
 
     const std::string mensajeSiguiente = "S";
@@ -135,25 +140,23 @@ void PlayState::render(Window& window) {
 }
 
 void PlayState::handleEvents(EventHandler& eventHandler) {
-    eventHandler.pollEvents();
-
     for(auto& boton : opciones){
         boton.handleEvents(eventHandler);
         if(boton.isClicked(eventHandler)){
-            if(std::to_string(boton.getIdRespuesta()) == preguntas.obtenerElemento(punteroPreguntas+5)){
+            if(respuestas[boton.getIdRespuesta()-1].second){
                 boton.isCorrect();
-                if(first){
+                if(firstResp){
                     respCorrectas += 1;
-                    first = false;
+                    firstResp = false;
                 }
             } else {
                 boton.isIncorrect();
-                if(first){
+                if(firstResp){
                     respIncorrectas += 1;
-                    first = false;
+                    firstResp = false;
                 }
             }
-            std::cout<<boton.getIdRespuesta();
+            //std::cout<<boton.getIdRespuesta();
         }
     }
 
@@ -161,7 +164,7 @@ void PlayState::handleEvents(EventHandler& eventHandler) {
     botonAnteriorPregunta->handleEvents(eventHandler);
 
     if (botonSiguientePregunta->isClicked(eventHandler)){
-        if (punteroPreguntas+6 < preguntas.getTotalPreguntas()){
+        if (punteroPreguntas+1 < database.totalPreguntas(idTema)){
             siguientePregunta = true;
         }
         else {
