@@ -10,50 +10,19 @@ SelectQState::SelectQState(StateManager& manager): stateManager(manager){
 
     numeroDeTemas = temasQuizz.size();
 
-    botonQ1 = std::make_unique<BotonRectangular>(
-        50, 100, 250, 80, 
-        colorNormal, colorHover
-    );
+    int buttonStartX[] = {50, 350, 650};
+    int buttonStartY[] = {100, 200, 300};
+    int buttonWidth = 250;
+    int buttonHight = 80;
 
-    botonQ2 = std::make_unique<BotonRectangular>(
-        350, 100, 250, 80, 
-        colorNormal, colorHover
-    );
+    for (int fila = 0; fila < 3; ++fila) {
+        for (int col = 0; col < 3; ++col) {
+            botonesEleccion.push_back(std::make_unique<BotonRectangular>(
+                buttonStartX[col], buttonStartY[fila], buttonWidth, buttonHight, colorNormal, colorHover
+            ));
+        }
+    }
 
-    botonQ3 = std::make_unique<BotonRectangular>(
-        650, 100, 250, 80, 
-        colorNormal, colorHover
-    );
-
-    botonQ4 = std::make_unique<BotonRectangular>(
-        50, 200, 250, 80, 
-        colorNormal, colorHover
-    );
-
-    botonQ5 = std::make_unique<BotonRectangular>(
-        350, 200, 250, 80, 
-        colorNormal, colorHover
-    );
-
-    botonQ6 = std::make_unique<BotonRectangular>(
-        650, 200, 250, 80, 
-        colorNormal, colorHover
-    );
-
-    botonQ7 = std::make_unique<BotonRectangular>(
-        50, 300, 250, 80, 
-        colorNormal, colorHover
-    );
-
-    botonQ8 = std::make_unique<BotonRectangular>(
-        350, 300, 250, 80, 
-        colorNormal, colorHover
-    );
-
-    botonQ9 = std::make_unique<BotonRectangular>(
-        650, 300, 250, 80, 
-        colorNormal, colorHover
-    );
 }
 
 void SelectQState::enter(){
@@ -73,15 +42,9 @@ void SelectQState::update(float deltaTime) {
 void SelectQState::render(Window& window) {
     window.clear();
 
-    botonQ1->render(window.getRenderer());
-    botonQ2->render(window.getRenderer());
-    botonQ3->render(window.getRenderer());
-    botonQ4->render(window.getRenderer());
-    botonQ5->render(window.getRenderer());
-    botonQ6->render(window.getRenderer());
-    botonQ7->render(window.getRenderer());
-    botonQ8->render(window.getRenderer());
-    botonQ9->render(window.getRenderer());
+    for (auto& boton : botonesEleccion){
+        boton->render(window.getRenderer());
+    }
 
     const std::string menuText = "Presiona S para Play";
     SDL_Color white = {255, 255, 255, 255};
@@ -106,80 +69,21 @@ void SelectQState::render(Window& window) {
         }
     }
 
-
     window.present();
 }
 
 void SelectQState::handleEvents(EventHandler& eventHandler) {
 
-    botonQ1->handleEvents(eventHandler);
-    botonQ2->handleEvents(eventHandler);
-    botonQ3->handleEvents(eventHandler);
-    botonQ4->handleEvents(eventHandler);
-    botonQ5->handleEvents(eventHandler);
-    botonQ6->handleEvents(eventHandler);
-    botonQ7->handleEvents(eventHandler);
-    botonQ8->handleEvents(eventHandler);
-    botonQ9->handleEvents(eventHandler);
-
-    if (botonQ1->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_S)) {
-        idTema = 1;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
+    for(auto& botones : botonesEleccion){
+        botones->handleEvents(eventHandler);
     }
 
-    if (botonQ2->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_A)) {
-        idTema = 2;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
-    }
-
-    if (botonQ3->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_S)) {
-        idTema = 3;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
-    }
-
-    if (botonQ4->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_A)) {
-        idTema = 4;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
-    }
-    if (botonQ5->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_S)) {
-        idTema = 5;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
-    }
-
-    if (botonQ6->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_A)) {
-        idTema = 6;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
-    }
-    if (botonQ7->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_S)) {
-        idTema = 7;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
-    }
-
-    if (botonQ8->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_A)) {
-        idTema = 8;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
-    }
-
-    if (botonQ9->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_A)) {
-        idTema = 9;
-        stateManager.submitRequest(RequestChangeState{
-            std::make_unique<PlayState>(stateManager, idTema)
-        });
+    for(size_t i = 0; i<botonesEleccion.size(); i++){
+        if (botonesEleccion[i]->isClicked(eventHandler)) {
+            idTema = i + 1;
+            stateManager.submitRequest(RequestChangeState{
+                std::make_unique<PlayState>(stateManager, idTema)
+            });
+        }
     }
 }

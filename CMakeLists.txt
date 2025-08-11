@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(ProyectoBaseSDL2)
+project(QuizzSDL2)
 
 # rmdir /s /q build     eliminar build
 # mkdir build           crear carpeta build

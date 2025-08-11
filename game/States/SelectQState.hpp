@@ -6,6 +6,9 @@
 
 #include "game/Database/ExtraerDB.hpp"
 
+#include <vector>
+#include <memory>
+
 class SelectQState : public GameState{
 public:
     SelectQState(StateManager& manager);
@@ -22,14 +25,7 @@ private:
     ExtraerDB database;
     int numeroDeTemas;
 
-    std::unique_ptr<BotonRectangular> botonQ1;
-    std::unique_ptr<BotonRectangular> botonQ2;
-    std::unique_ptr<BotonRectangular> botonQ3;
-    std::unique_ptr<BotonRectangular> botonQ4;
-    std::unique_ptr<BotonRectangular> botonQ5;
-    std::unique_ptr<BotonRectangular> botonQ6;
-    std::unique_ptr<BotonRectangular> botonQ7;
-    std::unique_ptr<BotonRectangular> botonQ8;
-    std::unique_ptr<BotonRectangular> botonQ9;
-    int idTema;
+    std::vector<std::unique_ptr<BotonRectangular>> botonesEleccion;
+
+    size_t idTema;
 };

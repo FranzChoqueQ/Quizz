@@ -16,15 +16,18 @@ PlayState::PlayState(StateManager& manager, int idTema)
     SDL_Color colorHover = {30, 64, 255, 255};
     SDL_Color colorCorrecto = {0, 200, 0, 255};
     SDL_Color colorIncorrecto = {200, 0, 0, 255};
-    
-    //std::vector<BotonRespuesta> opciones;
 
-    opciones.emplace_back(50, 200, 900, 100, colorNormal, colorHover, colorCorrecto,colorIncorrecto, 1);
-    opciones.emplace_back(50, 310, 900, 100, colorNormal, colorHover, colorCorrecto,colorIncorrecto, 2);
-    opciones.emplace_back(50, 420, 900, 100, colorNormal, colorHover, colorCorrecto,colorIncorrecto, 3);
-    opciones.emplace_back(50, 530, 900, 100, colorNormal, colorHover, colorCorrecto,colorIncorrecto, 4);
+    // Botones de opciones
+    int buttonStartX = 50;
+    int buttonStartY[] = {200, 310, 420, 530};
+    int buttonWidth = 900;
+    int buttonHight = 100;
 
+    for(int fila = 0; fila < 4; ++fila){
+        opciones.emplace_back(buttonStartX, buttonStartY[fila], buttonWidth, buttonHight, colorNormal, colorHover, colorCorrecto, colorIncorrecto, fila+1);
+    }
 
+    // Botones para desplazamiento entre preguntas
     botonSiguientePregunta = std::make_unique<BotonRectangular>(
         800, 640, 80, 50, 
         colorNormal, colorHover
@@ -46,7 +49,7 @@ PlayState::PlayState(StateManager& manager, int idTema)
 
 void PlayState::enter() {
     // Cargar recursos al entrar al estado
-    if (!textRender.loadFont("assets/fonts/times.ttf", 20)) {
+    if (!textRender.loadFont("assets/fonts/timesbd.ttf", 20)) {
         throw std::runtime_error("No se pudo cargar la fuente en PlayState");
     }
 }
@@ -163,7 +166,7 @@ void PlayState::handleEvents(EventHandler& eventHandler) {
     botonSiguientePregunta->handleEvents(eventHandler);
     botonAnteriorPregunta->handleEvents(eventHandler);
 
-    if (botonSiguientePregunta->isClicked(eventHandler)){
+    if (botonSiguientePregunta->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_RIGHT)){
         if (punteroPreguntas+1 < database.totalPreguntas(idTema)){
             siguientePregunta = true;
         }
@@ -178,7 +181,7 @@ void PlayState::handleEvents(EventHandler& eventHandler) {
         }
     }
 
-    if (botonAnteriorPregunta->isClicked(eventHandler)){
+    if (botonAnteriorPregunta->isClicked(eventHandler) | eventHandler.isKeyPressed(SDL_SCANCODE_LEFT)){
         if (punteroPreguntas != 0){
             anteriorPregunta = true;
         }
